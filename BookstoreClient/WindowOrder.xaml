@@ -1,0 +1,50 @@
+﻿<Window x:Name="window" x:Class="BookstoreClient.WindowOrder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookstoreClient"
+        mc:Ignorable="d"
+        Title="WindowOrder" Height="521" Width="696">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="25" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="MinWidth" Value="50" />
+        </Style>
+        <Style TargetType="GridViewColumnHeader" >
+            <Setter Property="MinWidth" Value="100" />
+        </Style>
+        <Style TargetType="ListView">
+            <Setter Property="Margin" Value="3" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <ListView SelectionMode="Single" ItemsSource="{Binding SelectedBooks, ElementName=window}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" />
+                        <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Author}"/>
+                        <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price,StringFormat={}{0:#.00}}"/>
+                        <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
+                        <GridViewColumn Header="Missing" DisplayMemberBinding="{Binding Missing}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Name="LabelTotalPrice" Grid.Column="1" Content="Total price 0.00" VerticalContentAlignment="Center" />
+
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Name="ButtonOK" Content="OK" Click="ButtonOK_Click" />
+            <Button Name="ButtonCancel" Content="Cancel" Click="ButtonCancel_Click" />
+        </StackPanel>
+    </Grid>
+</Window>
