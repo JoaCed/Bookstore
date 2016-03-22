@@ -1,0 +1,9 @@
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServer\bin\Debug\BookstoreServer.exe.config
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServer\bin\Debug\BookstoreServer.exe
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServer\bin\Debug\BookstoreServer.pdb
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServer\obj\Debug\BookstoreServer.csprojResolveAssemblyReference.cache
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServer\obj\Debug\BookstoreServer.exe
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServer\obj\Debug\BookstoreServer.pdb
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServer\bin\Debug\BookstoreServiceInterface.dll
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServer\bin\Debug\BookstoreServiceInterface.pdb
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServer\bin\Debug\Data\books.json
