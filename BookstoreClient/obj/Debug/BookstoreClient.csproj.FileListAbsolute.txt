@@ -18,3 +18,5 @@ C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreClient\obj
 C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreClient\obj\Debug\WindowAddBook.baml
 C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreClient\obj\Debug\WindowAbout.g.cs
 C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreClient\obj\Debug\WindowAbout.baml
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreClient\obj\Debug\WindowOrder.g.cs
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreClient\obj\Debug\WindowOrder.baml

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +23,9 @@ namespace BookstoreClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        BookstoreService Service;
+        BookstoreService Service= new BookstoreService();
         ObservableCollection<IBook> _FoundBooks = new ObservableCollection<IBook>();
-        ObservableCollection<BookOrder> _SelectedBooks = new ObservableCollection<BookOrder>();
+        ObservableCollection<BookSelected> _SelectedBooks = new ObservableCollection<BookSelected>();
 
         public MainWindow()
         {
@@ -38,7 +39,6 @@ namespace BookstoreClient
 
         async private void ButtonSearch_Click(object sender, RoutedEventArgs e)
         {
-            Service = new BookstoreService();
             IEnumerable<IBook> Books = null;
 
             ButtonSearch.IsEnabled = false; // I dont want reentrancy
@@ -76,7 +76,7 @@ namespace BookstoreClient
             }
         }
 
-        public ObservableCollection<BookOrder> SelectedBooks
+        public ObservableCollection<BookSelected> SelectedBooks
         {
             get
             {
@@ -95,14 +95,34 @@ namespace BookstoreClient
             AddDlg.TitelAuthor = B.Title + " " + B.Author;
             if (AddDlg.ShowDialog() == true) // Did the user click OK
             {
-                BookOrder NewBook = new BookOrder();
+                BookSelected NewBook = new BookSelected();
+                BookSelected SelectedBookFound=null;
+                    bool Found = false;
 
-                // Add a new order line
-                NewBook.Title = B.Title;
-                NewBook.Author = B.Author;
-                NewBook.Price = B.Price;
-                NewBook.Quantity = AddDlg.Quantity;
-                _SelectedBooks.Add(NewBook);
+                // Check if there already is a line for this book
+                foreach(BookSelected SelectedBook in _SelectedBooks)
+                {
+                    if(B.Title==SelectedBook.Title && B.Author==SelectedBook.Author)
+                    {
+                        Found = true;
+                        SelectedBookFound = SelectedBook;
+                    }
+                }
+
+                if (Found == false)
+                {
+                    // Add a new order line
+                    NewBook.Title = B.Title;
+                    NewBook.Author = B.Author;
+                    NewBook.Price = B.Price;
+                    NewBook.Quantity = AddDlg.Quantity;
+                    _SelectedBooks.Add(NewBook);
+                }
+                else
+                {
+                    // Add to existing line
+                    SelectedBookFound.Quantity += AddDlg.Quantity;
+                }
                 UpdateTotalPrice();
             }
         }
@@ -121,7 +141,7 @@ namespace BookstoreClient
         {
             Decimal TotalPrice = 0;
 
-            foreach (BookOrder BO in _SelectedBooks)
+            foreach (BookSelected BO in _SelectedBooks)
             {
                 TotalPrice += BO.Price * BO.Quantity;
             }
@@ -141,7 +161,7 @@ namespace BookstoreClient
         {
             if (ListViewSelected.SelectedItems.Count == 1)  // We only handle single selections
             {
-                _SelectedBooks.Remove((BookOrder)ListViewSelected.SelectedItem);
+                _SelectedBooks.Remove((BookSelected)ListViewSelected.SelectedItem);
                 UpdateTotalPrice();
             }
         }
@@ -153,14 +173,64 @@ namespace BookstoreClient
             AboutDlg.Owner = this;
             AboutDlg.ShowDialog();
         }
+
+        private void ButtonPlaceOrder_Click(object sender, RoutedEventArgs e)
+        {
+            WindowOrder OrderDlg = new WindowOrder();
+
+            OrderDlg.Owner = this;
+            // Copy to order list and calculate missing in stock
+            foreach(BookSelected BS in _SelectedBooks)
+            {
+                BookOrder BO = new BookOrder();
+
+                BO.Title = BS.Title;
+                BO.Author = BS.Author;
+                BO.Price = BS.Price;
+                BO.Quantity = BS.Quantity;
+                BO.Missing = BookInStock(BS.Title,BS.Author)-(int)BS.Quantity;
+                OrderDlg.SelectedBooks.Add(BO);
+            }
+            OrderDlg.ShowDialog();
+        }
+
+        private int BookInStock(string Title,string Author)
+        {
+            int InStock = 0;
+
+            foreach(IBook B in _FoundBooks)
+            {
+                if(B.Title==Title && B.Author==Author)
+                {
+                    InStock = B.InStock;
+                }
+            }
+            return InStock;
+        }
+
     }
 
-    public class BookOrder
+    public class BookSelected : INotifyPropertyChanged
     {
+        private uint quantity;
+
         public string Title { get; set; }
         public string Author { get; set; }
         public decimal Price { get; set; }
-        public uint Quantity { get; set; }
+        public uint Quantity
+        {
+            get
+            {
+                return quantity;
+            }
+            set
+            {
+                quantity = value;
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Quantity"));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
 }

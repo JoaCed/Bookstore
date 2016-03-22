@@ -69,6 +69,9 @@
     <Compile Include="WindowAddBook.xaml.cs">
       <DependentUpon>WindowAddBook.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowOrder.xaml.cs">
+      <DependentUpon>WindowOrder.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,6 +89,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowAddBook.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

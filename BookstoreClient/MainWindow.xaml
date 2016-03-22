@@ -80,7 +80,7 @@
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
                 <ListView Name="ListViewSelected" ItemsSource="{Binding SelectedBooks, ElementName=window}" SelectionChanged="ListViewSelected_SelectionChanged" SelectionMode="Single" >
                     <ListView.View>
@@ -96,9 +96,11 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Button Name="ButtonDeleteOrderLine" Content="Delete order line" Width="110" Click="ButtonDeleteOrderLine_Click" IsEnabled="False" />
                     <Label Name="LabelTotalPrice" Grid.Column="1" Content="Total price 0.00" VerticalContentAlignment="Center" />
+                    <Button Name="ButtonPlaceOrder" Grid.Column="2" Content="Place order" Width="100" Click="ButtonPlaceOrder_Click" />
                 </Grid>
             </Grid>
         </Grid>

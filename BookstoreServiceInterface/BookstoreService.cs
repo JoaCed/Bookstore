@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 using System.Runtime.Serialization;
+using System.Net.Sockets;
 
 namespace BookstoreServiceInterface
 {
@@ -28,33 +29,69 @@ namespace BookstoreServiceInterface
 
     public class BookstoreService : IBookstoreService
     {
-        IBookServiceImpl Service;
-        ChannelFactory<IBookServiceImpl> SCF;
+        IBookServiceImpl Service=null;
+        ChannelFactory<IBookServiceImpl> SCF=null;
+        NetTcpBinding TcpBinding=null;
 
         public Task<IEnumerable<IBook>> GetBooksAsync(string searchString)
         {
-            Book[] Books;
+            Book[] Books=null;
             Task<IEnumerable<IBook>> T;
-            NetTcpBinding TcpBinding;
+            uint RetryCount = 0;
 
-            TcpBinding = new NetTcpBinding();
-            TcpBinding.OpenTimeout = new TimeSpan(0, 0, 5);
-            TcpBinding.SendTimeout= new TimeSpan(0, 0, 5);
+            if (TcpBinding == null)
+            {
+                TcpBinding = new NetTcpBinding();
+                // The timeouts must be short or it will take a long time before the user see any error message
+                TcpBinding.OpenTimeout = new TimeSpan(0, 0, 5);
+                TcpBinding.SendTimeout = new TimeSpan(0, 0, 5);
+            }
             T= new Task<IEnumerable<IBook>>(() =>  // Lambda expression
             {
                 if(SCF== null) SCF = new ChannelFactory<IBookServiceImpl>(TcpBinding, "net.tcp://localhost:4567/BookService");
-                Service = SCF.CreateChannel();
-                Books = null;
 
-                try
+
+                // Sometimes a new channel must be created when there is an error
+                // Service is set to null if there is an expected exception and a new channel is created and the operation is tried once more
+                // I want to use the same channel as long as it works
+                while(RetryCount<2)
                 {
-                    Books = Service.GetBooks(searchString);
+                    if (Service == null)
+                    {
+                        System.Diagnostics.Debug.Print("Creating new channel");
+                        Service = SCF.CreateChannel();
+                    }
+                    Books = null;
+
+                    try
+                    {
+                        RetryCount++;
+                        System.Diagnostics.Debug.Print("Calling GetBooks()");
+                        Books = Service.GetBooks(searchString);
+                        return Books;
+                    }
+                    catch (CommunicationException CEx)
+                    {
+                        Service = null;
+                        if(RetryCount>=2) throw new BookServiceException("Communication error: " + CEx.Message);
+                    }
+                    catch (TimeoutException TEx)
+                    {
+                        Service = null;
+                        if (RetryCount >= 2) throw new BookServiceException("Timeout error: " + TEx.Message);
+                    }
+                    catch (SocketException SockEx)
+                    {
+                        Service = null;
+                        if (RetryCount >= 2) throw new BookServiceException("Communication error: " + SockEx.Message);
+                    }
+                    catch (Exception Ex)
+                    {
+                        Service = null;
+                        throw new BookServiceException("Could not connect channel: " + Ex.Message);
+                    }
                 }
-                catch (Exception Ex)
-                {
-                    throw new BookServiceException("Could not connect channel: "+Ex.Message);
-                }
-                return Books;
+                return null;  // Calling WCF service did not work
             });
             T.Start();
             return T;

@@ -31,6 +31,7 @@ namespace BookstoreServer
             {
                 if (Host.State == CommunicationState.Opened)
                 {
+                    Program.AddLog("Shutting down WCF service");
                     Host.Close();
                 }
             }
