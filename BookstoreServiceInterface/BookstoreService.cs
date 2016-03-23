@@ -30,7 +30,7 @@ namespace BookstoreServiceInterface
     public class BookstoreService : IBookstoreService
     {
         IBookServiceImpl Service=null;
-        ChannelFactory<IBookServiceImpl> SCF=null;
+        ChannelFactory<IBookServiceImpl> CF=null;
         NetTcpBinding TcpBinding=null;
 
         public Task<IEnumerable<IBook>> GetBooksAsync(string searchString)
@@ -48,7 +48,7 @@ namespace BookstoreServiceInterface
             }
             T= new Task<IEnumerable<IBook>>(() =>  // Lambda expression
             {
-                if(SCF== null) SCF = new ChannelFactory<IBookServiceImpl>(TcpBinding, "net.tcp://localhost:4567/BookService");
+                if(CF== null) CF = new ChannelFactory<IBookServiceImpl>(TcpBinding, "net.tcp://localhost:4567/BookService");
 
 
                 // Sometimes a new channel must be created when there is an error
@@ -59,7 +59,7 @@ namespace BookstoreServiceInterface
                     if (Service == null)
                     {
                         System.Diagnostics.Debug.Print("Creating new channel");
-                        Service = SCF.CreateChannel();
+                        Service = CF.CreateChannel();
                     }
                     Books = null;
 
@@ -118,6 +118,7 @@ namespace BookstoreServiceInterface
         public int InStock { get; set; }
     }
 
+    // This is the only exception the client should see from the Book service
     public class BookServiceException : Exception
     {
         public BookServiceException(string EText)

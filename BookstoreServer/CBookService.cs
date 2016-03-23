@@ -13,7 +13,7 @@ namespace BookstoreServer
 {
     internal class CBookService
     {
-        static internal List<Book> Books = new List<Book>();
+        static internal List<Book> Books = new List<Book>(); // This is the book database
 
         ServiceHost Host;
 
@@ -44,9 +44,10 @@ namespace BookstoreServer
             RootObject ro = null;
             try
             {
-
+                // Read JSON file to string variable and deserialize it
                 StreamReader sr = new StreamReader("Data\\books.json");
                 string jsonString = sr.ReadToEnd();
+                sr.Close();
                 JavaScriptSerializer ser = new JavaScriptSerializer();
                 ro = ser.Deserialize<RootObject>(jsonString);
 
@@ -86,6 +87,7 @@ namespace BookstoreServer
             Program.AddLog("Search string: " + searchString);
             foreach (Book B in CBookService.Books)
             {
+                // Convert to upper so the search gets case insensitive
                 if (B.Title.ToUpper().IndexOf(searchString.ToUpper()) >= 0 || B.Author.ToUpper().IndexOf(searchString.ToUpper()) >= 0)
                 {
                     MatchedBooks.Add(B);

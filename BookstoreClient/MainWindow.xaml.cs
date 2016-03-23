@@ -92,7 +92,7 @@ namespace BookstoreClient
             B = (Book)ListViewFound.SelectedItem;
             AddDlg.Owner = this;
             AddDlg.Quantity = 1;
-            AddDlg.TitelAuthor = B.Title + " " + B.Author;
+            AddDlg.TitelAuthor = B.Title + " - " + B.Author;
             if (AddDlg.ShowDialog() == true) // Did the user click OK
             {
                 BookSelected NewBook = new BookSelected();
@@ -117,6 +117,7 @@ namespace BookstoreClient
                     NewBook.Price = B.Price;
                     NewBook.Quantity = AddDlg.Quantity;
                     _SelectedBooks.Add(NewBook);
+                    ButtonPlaceOrder.IsEnabled = true;
                 }
                 else
                 {
@@ -163,6 +164,7 @@ namespace BookstoreClient
             {
                 _SelectedBooks.Remove((BookSelected)ListViewSelected.SelectedItem);
                 UpdateTotalPrice();
+                if(_SelectedBooks.Count==0) ButtonPlaceOrder.IsEnabled = false; // Cant place empty orders
             }
         }
 
@@ -183,15 +185,23 @@ namespace BookstoreClient
             foreach(BookSelected BS in _SelectedBooks)
             {
                 BookOrder BO = new BookOrder();
+                int Missing;
 
                 BO.Title = BS.Title;
                 BO.Author = BS.Author;
                 BO.Price = BS.Price;
                 BO.Quantity = BS.Quantity;
-                BO.Missing = BookInStock(BS.Title,BS.Author)-(int)BS.Quantity;
+                Missing = (int)BS.Quantity - BookInStock(BS.Title, BS.Author);
+                BO.Missing = Missing>0?Missing:0;
                 OrderDlg.SelectedBooks.Add(BO);
             }
-            OrderDlg.ShowDialog();
+            if(OrderDlg.ShowDialog()==true)
+            {
+                // If users clicked OK clear list
+                _SelectedBooks.Clear();
+                ButtonPlaceOrder.IsEnabled = false;
+            }
+            UpdateTotalPrice();
         }
 
         private int BookInStock(string Title,string Author)

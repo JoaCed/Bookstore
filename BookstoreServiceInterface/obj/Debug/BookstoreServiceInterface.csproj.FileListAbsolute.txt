@@ -1,5 +1,5 @@
 C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServiceInterface\bin\Debug\BookstoreServiceInterface.dll
 C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServiceInterface\bin\Debug\BookstoreServiceInterface.pdb
-C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServiceInterface\obj\Debug\BookstoreServiceInterface.csprojResolveAssemblyReference.cache
 C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServiceInterface\obj\Debug\BookstoreServiceInterface.dll
 C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServiceInterface\obj\Debug\BookstoreServiceInterface.pdb
+C:\Users\Nisse\Documents\Visual Studio 14\Projects\Bookstore\BookstoreServiceInterface\obj\Debug\BookstoreServiceInterface.csprojResolveAssemblyReference.cache

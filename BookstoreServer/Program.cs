@@ -27,7 +27,7 @@ namespace BookstoreServer
             }
             catch(Exception Ex)
             {
-                AddLog(Ex.Message);
+                AddLog("Could not start WCF service: "+Ex.Message);
             }
             if(StartOK)  // The service must have started OK
             {
@@ -37,7 +37,7 @@ namespace BookstoreServer
             }
         }
 
-        // Now it only write the text to the console window
+        // Now it only writes the text to the console window
         // If it was a Windows Service it would have to write it somewhere else
         static internal void AddLog(string Text)
         {

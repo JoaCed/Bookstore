@@ -19,7 +19,7 @@ namespace BookstoreClient
     /// </summary>
     public partial class WindowAddBook : Window
     {
-        internal uint Quantity;
+        internal uint Quantity; // Quantity entered by user can be read here
         internal string TitelAuthor;
 
         public WindowAddBook()
@@ -41,7 +41,7 @@ namespace BookstoreClient
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
-            if (uint.TryParse(TextBoxCount.Text, out Quantity))
+            if (uint.TryParse(TextBoxCount.Text, out Quantity)) // Check if enterered text is integer
             {
                 DialogResult = true;
                 Close();

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookstoreClient"
         mc:Ignorable="d"
-        Title="WindowOrder" Height="521" Width="696">
+        Title="Your order" Height="521" Width="696" Loaded="window_Loaded" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Height" Value="25" />
@@ -38,8 +38,8 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Label Name="LabelTotalPrice" Grid.Column="1" Content="Total price 0.00" VerticalContentAlignment="Center" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Label Name="LabelTotalPrice" Grid.Column="1" Content="Total price 0.00" VerticalContentAlignment="Center" FontSize="16" />
 
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">

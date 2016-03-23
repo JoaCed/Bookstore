@@ -37,12 +37,31 @@ namespace BookstoreClient
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = true;
             Close();
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
+        }
+
+        /// Call this to calculate and display the new price amount
+        private void UpdateTotalPrice()
+        {
+            Decimal TotalPrice = 0;
+
+            foreach (BookOrder BO in _SelectedBooks)
+            {
+                TotalPrice += BO.Price * BO.Quantity;
+            }
+            LabelTotalPrice.Content = string.Format("Total price: {0:0.00}", TotalPrice);
+        }
+
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateTotalPrice();
         }
     }
 
